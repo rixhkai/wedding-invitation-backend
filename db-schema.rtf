@@ -1,0 +1,107 @@
+-- DROP SCHEMA wedding;
+
+CREATE SCHEMA wedding AUTHORIZATION postgres;
+-- wedding."T_User" definition
+
+-- Drop table
+
+-- DROP TABLE wedding."T_User";
+
+CREATE TABLE wedding."T_User" (
+	id varchar(36) NOT NULL,
+	"name" varchar(128) NULL,
+	phone varchar(20) NULL,
+	email varchar(100) NULL,
+	is_invited bool NULL,
+	date_created varchar NULL,
+	date_modified varchar NULL,
+	CONSTRAINT t_user_pk PRIMARY KEY (id)
+);
+
+-- Permissions
+
+ALTER TABLE wedding."T_User" OWNER TO postgres;
+GRANT ALL ON TABLE wedding."T_User" TO postgres;
+
+
+-- wedding."T_Wedding_Gift" definition
+
+-- Drop table
+
+-- DROP TABLE wedding."T_Wedding_Gift";
+
+CREATE TABLE wedding."T_Wedding_Gift" (
+	id varchar(36) NOT NULL,
+	"name" varchar(128) NULL,
+	account_name varchar(256) NULL,
+	account_number varchar(128) NULL,
+	bank_recipient varchar(50) NULL,
+	notes text NULL,
+	amount int4 NULL,
+	receipt_proof varchar(256) NULL,
+	date_created varchar NULL,
+	date_modified varchar NULL,
+	CONSTRAINT t_wedding_gift_pk PRIMARY KEY (id)
+);
+
+-- Permissions
+
+ALTER TABLE wedding."T_Wedding_Gift" OWNER TO postgres;
+GRANT ALL ON TABLE wedding."T_Wedding_Gift" TO postgres;
+
+
+-- wedding."T_Comments" definition
+
+-- Drop table
+
+-- DROP TABLE wedding."T_Comments";
+
+CREATE TABLE wedding."T_Comments" (
+	id varchar(36) NOT NULL,
+	"comment" text NULL,
+	user_id varchar NULL,
+	date_created varchar NOT NULL,
+	date_modified varchar NULL,
+	CONSTRAINT t_comments_pk PRIMARY KEY (id),
+	CONSTRAINT t_comments_t_user_fk FOREIGN KEY (user_id) REFERENCES wedding."T_User"(id)
+);
+
+-- Permissions
+
+ALTER TABLE wedding."T_Comments" OWNER TO postgres;
+GRANT ALL ON TABLE wedding."T_Comments" TO postgres;
+
+
+-- wedding."T_RSVP" definition
+
+-- Drop table
+
+-- DROP TABLE wedding."T_RSVP";
+
+CREATE TABLE wedding."T_RSVP" (
+	id varchar(36) NOT NULL,
+	"name" varchar(128) NULL,
+	email varchar(100) NULL,
+	phone varchar(20) NULL,
+	attendance int2 NULL,
+	is_attend bool NULL,
+	user_id varchar(36) NULL,
+	date_created varchar NULL,
+	date_modified varchar NULL,
+	relation varchar(512) NULL,
+	CONSTRAINT t_rsvp_pk PRIMARY KEY (id),
+	CONSTRAINT t_rsvp_unique UNIQUE (user_id),
+	CONSTRAINT t_rsvp_t_user_fk FOREIGN KEY (user_id) REFERENCES wedding."T_User"(id)
+);
+
+-- Permissions
+
+ALTER TABLE wedding."T_RSVP" OWNER TO postgres;
+GRANT ALL ON TABLE wedding."T_RSVP" TO postgres;
+
+
+
+
+-- Permissions
+
+GRANT ALL ON SCHEMA wedding TO postgres;
